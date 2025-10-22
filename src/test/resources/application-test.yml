@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:18-alpine:///f1db
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    clean-disabled: false
+
+logging:
+  level:
+    com.f1.api: DEBUG
+    org.springframework.web: DEBUG
+    org.testcontainers: INFO
