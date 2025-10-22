@@ -1,0 +1,557 @@
+openapi: 3.0.3
+info:
+  title: Formula 1 API
+  description: |
+    RESTful API for managing Formula 1 drivers and teams information for the 2025 season.
+    This API follows REST best practices with proper versioning and error handling.
+  version: 1.0.0
+  contact:
+    name: F1 API Support
+    email: support@f1api.com
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+tags:
+  - name: Drivers
+    description: Operations related to F1 drivers
+  - name: Teams
+    description: Operations related to F1 teams
+
+paths:
+  /api/v1/drivers:
+    get:
+      tags:
+        - Drivers
+      summary: Get all drivers
+      description: Retrieve a list of all Formula 1 drivers for the 2025 season
+      operationId: getAllDrivers
+      parameters:
+        - name: teamId
+          in: query
+          description: Filter drivers by team ID
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved drivers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DriverResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Drivers
+      summary: Create a new driver
+      description: Add a new Formula 1 driver to the system
+      operationId: createDriver
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverRequest'
+      responses:
+        '201':
+          description: Driver successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/drivers/{driverId}:
+    get:
+      tags:
+        - Drivers
+      summary: Get driver by ID
+      description: Retrieve detailed information about a specific driver
+      operationId: getDriverById
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Unique identifier of the driver
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved driver
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - Drivers
+      summary: Update driver
+      description: Update information for an existing driver
+      operationId: updateDriver
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Unique identifier of the driver
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DriverRequest'
+      responses:
+        '200':
+          description: Driver successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DriverResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - Drivers
+      summary: Delete driver
+      description: Remove a driver from the system
+      operationId: deleteDriver
+      parameters:
+        - name: driverId
+          in: path
+          required: true
+          description: Unique identifier of the driver
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Driver successfully deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/teams:
+    get:
+      tags:
+        - Teams
+      summary: Get all teams
+      description: Retrieve a list of all Formula 1 teams for the 2025 season
+      operationId: getAllTeams
+      responses:
+        '200':
+          description: Successfully retrieved teams list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    post:
+      tags:
+        - Teams
+      summary: Create a new team
+      description: Add a new Formula 1 team to the system
+      operationId: createTeam
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '201':
+          description: Team successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/teams/{teamId}:
+    get:
+      tags:
+        - Teams
+      summary: Get team by ID
+      description: Retrieve detailed information about a specific team
+      operationId: getTeamById
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          description: Unique identifier of the team
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved team
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    put:
+      tags:
+        - Teams
+      summary: Update team
+      description: Update information for an existing team
+      operationId: updateTeam
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          description: Unique identifier of the team
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+      responses:
+        '200':
+          description: Team successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    delete:
+      tags:
+        - Teams
+      summary: Delete team
+      description: Remove a team from the system
+      operationId: deleteTeam
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          description: Unique identifier of the team
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Team successfully deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /api/v1/teams/{teamId}/drivers:
+    get:
+      tags:
+        - Teams
+      summary: Get drivers by team
+      description: Retrieve all drivers for a specific team
+      operationId: getDriversByTeam
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          description: Unique identifier of the team
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successfully retrieved team drivers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DriverResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    DriverRequest:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - driverNumber
+        - nationality
+        - teamId
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Driver's first name
+          example: Max
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Driver's last name
+          example: Verstappen
+        driverNumber:
+          type: integer
+          minimum: 1
+          maximum: 99
+          description: Driver's racing number
+          example: 1
+        nationality:
+          type: string
+          minLength: 2
+          maxLength: 50
+          description: Driver's nationality
+          example: Dutch
+        dateOfBirth:
+          type: string
+          format: date
+          description: Driver's date of birth
+          example: 1997-09-30
+        teamId:
+          type: integer
+          format: int64
+          description: ID of the team the driver races for
+          example: 1
+
+    DriverResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the driver
+          example: 1
+        firstName:
+          type: string
+          description: Driver's first name
+          example: Max
+        lastName:
+          type: string
+          description: Driver's last name
+          example: Verstappen
+        driverNumber:
+          type: integer
+          description: Driver's racing number
+          example: 1
+        nationality:
+          type: string
+          description: Driver's nationality
+          example: Dutch
+        dateOfBirth:
+          type: string
+          format: date
+          description: Driver's date of birth
+          example: 1997-09-30
+        teamId:
+          type: integer
+          format: int64
+          description: ID of the team the driver races for
+          example: 1
+        teamName:
+          type: string
+          description: Name of the team
+          example: Red Bull Racing
+
+    TeamRequest:
+      type: object
+      required:
+        - name
+        - base
+        - teamChief
+        - powerUnit
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Team's full name
+          example: Red Bull Racing
+        base:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Team's headquarters location
+          example: Milton Keynes, United Kingdom
+        teamChief:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Name of the team principal
+          example: Christian Horner
+        powerUnit:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Engine/power unit manufacturer
+          example: Honda RBPT
+        firstEntry:
+          type: integer
+          minimum: 1950
+          maximum: 2025
+          description: Year of first F1 entry
+          example: 2005
+        championships:
+          type: integer
+          minimum: 0
+          description: Number of constructor championships won
+          example: 6
+
+    TeamResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier of the team
+          example: 1
+        name:
+          type: string
+          description: Team's full name
+          example: Red Bull Racing
+        base:
+          type: string
+          description: Team's headquarters location
+          example: Milton Keynes, United Kingdom
+        teamChief:
+          type: string
+          description: Name of the team principal
+          example: Christian Horner
+        powerUnit:
+          type: string
+          description: Engine/power unit manufacturer
+          example: Honda RBPT
+        firstEntry:
+          type: integer
+          description: Year of first F1 entry
+          example: 2005
+        championships:
+          type: integer
+          description: Number of constructor championships won
+          example: 6
+
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference that identifies the problem type
+          example: https://api.f1.com/problems/validation-error
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: Validation Error
+        status:
+          type: integer
+          description: The HTTP status code
+          example: 400
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence
+          example: Driver number must be between 1 and 99
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence
+          example: /api/v1/drivers
+
+  responses:
+    BadRequest:
+      description: Bad request - Invalid input parameters
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+          example:
+            type: https://api.f1.com/problems/validation-error
+            title: Validation Error
+            status: 400
+            detail: Invalid input parameters
+            instance: /api/v1/drivers
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+          example:
+            type: https://api.f1.com/problems/not-found
+            title: Not Found
+            status: 404
+            detail: The requested resource was not found
+            instance: /api/v1/drivers/999
+
+    Conflict:
+      description: Conflict - Resource already exists
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+          example:
+            type: https://api.f1.com/problems/conflict
+            title: Conflict
+            status: 409
+            detail: A driver with this number already exists
+            instance: /api/v1/drivers
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+          example:
+            type: https://api.f1.com/problems/internal-error
+            title: Internal Server Error
+            status: 500
+            detail: An unexpected error occurred
+            instance: /api/v1/drivers
