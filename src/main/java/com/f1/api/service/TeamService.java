@@ -7,8 +7,8 @@ import com.f1.api.generated.model.TeamRequest;
 import com.f1.api.generated.model.TeamResponse;
 import com.f1.api.mapper.TeamMapper;
 import com.f1.api.repository.TeamRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +16,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class TeamService {
 
+    private static final Logger log = LoggerFactory.getLogger(TeamService.class);
+
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+
+    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper) {
+        this.teamRepository = teamRepository;
+        this.teamMapper = teamMapper;
+    }
 
     public List<TeamResponse> getAllTeams() {
         log.info("Fetching all teams");

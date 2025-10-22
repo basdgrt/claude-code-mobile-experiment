@@ -6,8 +6,8 @@ import com.f1.api.generated.model.TeamRequest;
 import com.f1.api.generated.model.TeamResponse;
 import com.f1.api.service.DriverService;
 import com.f1.api.service.TeamService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@Slf4j
 public class TeamController implements TeamsApi {
+
+    private static final Logger log = LoggerFactory.getLogger(TeamController.class);
 
     private final TeamService teamService;
     private final DriverService driverService;
+
+    public TeamController(TeamService teamService, DriverService driverService) {
+        this.teamService = teamService;
+        this.driverService = driverService;
+    }
 
     @Override
     public ResponseEntity<List<TeamResponse>> getAllTeams() {

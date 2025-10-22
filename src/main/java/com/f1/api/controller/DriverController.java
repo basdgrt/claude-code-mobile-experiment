@@ -4,8 +4,8 @@ import com.f1.api.generated.api.DriversApi;
 import com.f1.api.generated.model.DriverRequest;
 import com.f1.api.generated.model.DriverResponse;
 import com.f1.api.service.DriverService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@Slf4j
 public class DriverController implements DriversApi {
 
+    private static final Logger log = LoggerFactory.getLogger(DriverController.class);
+
     private final DriverService driverService;
+
+    public DriverController(DriverService driverService) {
+        this.driverService = driverService;
+    }
 
     @Override
     public ResponseEntity<List<DriverResponse>> getAllDrivers(Long teamId) {

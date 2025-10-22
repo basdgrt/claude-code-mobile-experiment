@@ -1,7 +1,6 @@
 package com.f1.api.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +9,6 @@ import java.util.List;
 @Table(name = "teams", uniqueConstraints = {
         @UniqueConstraint(name = "uk_team_name", columnNames = "name")
 })
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Team {
 
     @Id
@@ -40,11 +34,98 @@ public class Team {
     private Integer championships;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = false)
-    @Builder.Default
     private List<Driver> drivers = new ArrayList<>();
 
     @Version
     private Long version;
+
+    public Team() {
+    }
+
+    public Team(Long id, String name, String base, String teamChief, String powerUnit,
+                Integer firstEntry, Integer championships, List<Driver> drivers, Long version) {
+        this.id = id;
+        this.name = name;
+        this.base = base;
+        this.teamChief = teamChief;
+        this.powerUnit = powerUnit;
+        this.firstEntry = firstEntry;
+        this.championships = championships;
+        this.drivers = drivers != null ? drivers : new ArrayList<>();
+        this.version = version;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    public String getTeamChief() {
+        return teamChief;
+    }
+
+    public void setTeamChief(String teamChief) {
+        this.teamChief = teamChief;
+    }
+
+    public String getPowerUnit() {
+        return powerUnit;
+    }
+
+    public void setPowerUnit(String powerUnit) {
+        this.powerUnit = powerUnit;
+    }
+
+    public Integer getFirstEntry() {
+        return firstEntry;
+    }
+
+    public void setFirstEntry(Integer firstEntry) {
+        this.firstEntry = firstEntry;
+    }
+
+    public Integer getChampionships() {
+        return championships;
+    }
+
+    public void setChampionships(Integer championships) {
+        this.championships = championships;
+    }
+
+    public List<Driver> getDrivers() {
+        return drivers;
+    }
+
+    public void setDrivers(List<Driver> drivers) {
+        this.drivers = drivers;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
 
     @Override
     public String toString() {

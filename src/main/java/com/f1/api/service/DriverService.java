@@ -8,8 +8,8 @@ import com.f1.api.generated.model.DriverRequest;
 import com.f1.api.generated.model.DriverResponse;
 import com.f1.api.mapper.DriverMapper;
 import com.f1.api.repository.DriverRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class DriverService {
+
+    private static final Logger log = LoggerFactory.getLogger(DriverService.class);
 
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
     private final TeamService teamService;
+
+    public DriverService(DriverRepository driverRepository, DriverMapper driverMapper, TeamService teamService) {
+        this.driverRepository = driverRepository;
+        this.driverMapper = driverMapper;
+        this.teamService = teamService;
+    }
 
     public List<DriverResponse> getAllDrivers(Long teamId) {
         log.info("Fetching all drivers" + (teamId != null ? " for team id: " + teamId : ""));
