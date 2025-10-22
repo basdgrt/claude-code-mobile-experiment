@@ -30,14 +30,15 @@ public class TeamMapper {
             return null;
         }
 
-        return Team.builder()
-                .name(request.getName())
-                .base(request.getBase())
-                .teamChief(request.getTeamChief())
-                .powerUnit(request.getPowerUnit())
-                .firstEntry(request.getFirstEntry())
-                .championships(request.getChampionships())
-                .build();
+        Team team = new Team();
+        team.setName(request.getName());
+        team.setBase(request.getBase());
+        team.setTeamChief(request.getTeamChief());
+        team.setPowerUnit(request.getPowerUnit());
+        team.setFirstEntry(request.getFirstEntry());
+        team.setChampionships(request.getChampionships());
+
+        return team;
     }
 
     public void updateEntity(Team team, TeamRequest request) {

@@ -35,14 +35,15 @@ public class DriverMapper {
             return null;
         }
 
-        return Driver.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .driverNumber(request.getDriverNumber())
-                .nationality(request.getNationality())
-                .dateOfBirth(request.getDateOfBirth())
-                .team(team)
-                .build();
+        Driver driver = new Driver();
+        driver.setFirstName(request.getFirstName());
+        driver.setLastName(request.getLastName());
+        driver.setDriverNumber(request.getDriverNumber());
+        driver.setNationality(request.getNationality());
+        driver.setDateOfBirth(request.getDateOfBirth());
+        driver.setTeam(team);
+
+        return driver;
     }
 
     public void updateEntity(Driver driver, DriverRequest request, Team team) {
